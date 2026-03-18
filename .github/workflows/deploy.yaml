@@ -1,0 +1,32 @@
+name: CI/CD Terraform Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Setup Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve
