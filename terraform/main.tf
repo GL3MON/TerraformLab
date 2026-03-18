@@ -53,7 +53,7 @@ resource "kubernetes_deployment" "mongodb" {
 resource "kubernetes_service_v1" "mongodb_service" {
   metadata {
     name      = "mongodb-service"
-    namespace = kubernetes_service_v1.demo.metadata[0].name
+    namespace = kubernetes_namespace_v1.demo.metadata[0].name
   }
 
   spec {
